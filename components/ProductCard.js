@@ -7,7 +7,12 @@ const ProductCard = ({ product }) => {
       p="md"
       component="a"
       href={`/product/${product.id}`}
-      sx={{ position: "relative" }}
+      sx={(theme) => ({
+        position: "relative",
+        "&:hover": {
+          backgroundColor: theme.colors.gray[1],
+        },
+      })}
     >
       <AspectRatio ratio={720 / 1080} sx={{ maxWidth: 250 }}>
         <Image src={product.image} alt={product.title} />

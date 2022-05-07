@@ -10,13 +10,6 @@ function MyApp({ Component, pageProps }) {
   const getLayout = Component.getLayout || ((page) => page);
   return (
     <>
-      <Head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=Roboto&display=swap"
-          rel="stylesheet"
-        />
-      </Head>
-
       <MantineProvider
         withGlobalStyles
         withNormalizeCSS
