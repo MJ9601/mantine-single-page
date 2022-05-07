@@ -9,7 +9,7 @@ import {
 import { useForm } from "@mantine/form";
 import PageLayout from "../../layout/PageLayout";
 
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseBackend/firebaseConfig";
 import { useGlobalState } from "../../cms/globalStateProvider";
 import { useRouter } from "next/router";
@@ -33,29 +33,23 @@ const register = () => {
         value !== values.password ? "Passwords did not match" : null,
     },
   });
-
-  const signInUser = (email, password) => {
-    console.log(email, password);
-
-    signInWithEmailAndPassword(auth, email, password)
+  const signUp = (email, password) =>
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        const user = userCredential?.user;
-        dispatch({ type: "LOGIN", user: user });
+        const _user = userCredential.user;
+        dispatch({ type: "LOGIN", user: _user });
         router.push("/");
-        console.log(user);
       })
       .catch((err) => {
-        const errCode = err.code;
-        const errMsg = err.message;
+        console.log(err.message);
       });
-  };
+
   return (
     <Center style={{ width: "100%", height: "70vh" }}>
       <Paper shadow="md" p="md">
         <form
           onSubmit={registerForm.onSubmit((values) => {
-            signInUser(values.email, values.password);
-            console.log(values.email);
+            signUp(values.email, values.password);
           })}
         >
           <Stack>

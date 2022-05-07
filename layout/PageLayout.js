@@ -9,13 +9,27 @@ import {
   Input,
   Button,
   Drawer,
+  Avatar,
+  Stack,
 } from "@mantine/core";
 import "@fontsource/roboto";
 import { Search, ShoppingCart } from "tabler-icons-react";
 import { useGlobalState } from "../cms/globalStateProvider";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../firebaseBackend/firebaseConfig";
+import { useEffect } from "react";
+import ShoppingItem from "../components/ShoppingItem";
 
 const PageLayout = ({ children }) => {
-  const [{ openedDrawer, user }, dispatch] = useGlobalState();
+  const [{ openedDrawer, user, userCard }, dispatch] = useGlobalState();
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (_user) => {
+      if (_user) dispatch({ type: "LOGIN", user: _user });
+      else dispatch({ type: "LOGOUT" });
+    });
+  }, []);
+
   return (
     <AppShell
       styles={{
@@ -63,9 +77,25 @@ const PageLayout = ({ children }) => {
                   </Button>
                 </>
               ) : (
-                <Button onClick={() => dispatch({ type: "TOGGOLE" })}>
-                  <ShoppingCart />
-                </Button>
+                <Group position="right" spacing="md">
+                  <Avatar
+                    color="cyan"
+                    radius="xl"
+                    onClick={() =>
+                      signOut(auth).then(() => dispatch({ type: "LOGOUT" }))
+                    }
+                  >
+                    {user?.email[0]}
+                  </Avatar>
+
+                  <Button
+                    size="sm"
+                    variant="subtle"
+                    onClick={() => dispatch({ type: "TOGGOLE" })}
+                  >
+                    <ShoppingCart />
+                  </Button>
+                </Group>
               )}
             </Box>
           </Group>
@@ -88,7 +118,25 @@ const PageLayout = ({ children }) => {
         onClose={() => dispatch({ type: "TOGGOLE" })}
         padding="xl"
         size="xl"
-      ></Drawer>
+        position="right"
+      >
+        <Stack pt="xl" spacing="lg">
+          <Group grow position="apart">
+            <Title order={4}>Your Card</Title>
+            <Button
+              variant="subtle"
+              color="red"
+              onClick={() => dispatch({ type: "EMPTY_CARD" })}
+            >
+              Remove all
+            </Button>
+          </Group>
+
+          {userCard?.map((item, index) => (
+            <ShoppingItem key={index} item={item} />
+          ))}
+        </Stack>
+      </Drawer>
       {children}
     </AppShell>
   );

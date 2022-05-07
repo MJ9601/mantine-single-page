@@ -26,19 +26,9 @@ export const reducer = (state, action) => {
     case "ADD_PRODUCT_TO_CARD":
       return {
         ...state,
-        userCard: () => {
-          const product = userCard.find(
-            (_product) => _product.id === action?.payload.id
-          );
-          if (!product)
-            return userCard.push({ ...product, amount: (product.amount = 1) });
-          if (product)
-            return userCard
-              .filter((_product) => _product.id !== product.id)
-              .push({ ...product, amount: product.amount + 1 });
-        },
+        userCard: addingProduct(state.userCard, action.product),
       };
-    case "REMOVE_ALL_PRODUCTS_FROM_CARD":
+    case "EMPTY_CARD":
       return {
         ...state,
         userCard: [],
@@ -46,17 +36,28 @@ export const reducer = (state, action) => {
     case "REMOVE_A_PRODUCT":
       return {
         ...state,
-        userCard: () => {
-          const product = userCard.filter(
-            (_product) => _product.id === action?.payload.id
-          );
-          if (product.amount == 1)
-            return userCard.filter((_product) => _product.id !== product.id);
-          if (product.amount > 1)
-            return userCard
-              .filter((_product) => _product.id !== product.id)
-              .push({ ...product, amount: product.amount - 1 });
-        },
+        userCard: removingProduct(state.userCard, action.product),
       };
   }
+};
+
+const addingProduct = (userCard, product) => {
+  const _product = userCard.find((item) => item.id === product.id);
+  if (!_product) return [...userCard, { ...product, amount: 1 }];
+  else
+    return [
+      ...userCard.filter((item) => item.id !== product.id),
+      { ...product, amount: _product.amount + 1 },
+    ];
+};
+
+const removingProduct = (userCard, product) => {
+  const _product = userCard.find((item) => item.id === product.id);
+  if (_product.amount === 1)
+    return [...userCard.filter((item) => item.id !== product.id)];
+  else
+    return [
+      ...userCard.filter((item) => item.id !== product.id),
+      { ...product, amount: _product.amount - 1 },
+    ];
 };

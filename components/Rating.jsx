@@ -19,7 +19,6 @@ const Rating = ({ _rate }) => {
     return starRating;
   };
 
-  console.log(rate);
   return (
     <>
       <Group position="apart" spacing={1}>

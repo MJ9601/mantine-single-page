@@ -10,16 +10,24 @@ import {
   Title,
   Kbd,
   Text,
-  Center,
   Button,
 } from "@mantine/core";
 import { getAllProducts, getProduct } from "../../api/getData";
 import PageLayout from "../../layout/PageLayout";
 import Rating from "../../components/Rating";
-import { Star } from "tabler-icons-react";
+import { useGlobalState } from "../../cms/globalStateProvider";
+import { useRouter } from "next/router";
 
 const product = ({ product }) => {
-  console.log(product);
+  const [{ user }, dispatch] = useGlobalState();
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (!user) router.push("/auth/login");
+    else {
+      dispatch({ type: "ADD_PRODUCT_TO_CARD", product: product });
+    }
+  };
   return (
     <Container mt="lg">
       <Group position="apart">
@@ -69,6 +77,7 @@ const product = ({ product }) => {
                 <Button
                   variant="gradient"
                   gradient={{ from: "teal", to: "lime", deg: 105 }}
+                  onClick={handleClick}
                 >
                   Add to card
                 </Button>
