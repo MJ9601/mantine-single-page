@@ -9,7 +9,16 @@ import {
 import { useForm } from "@mantine/form";
 import PageLayout from "../../layout/PageLayout";
 
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebaseBackend/firebaseConfig";
+import { useGlobalState } from "../../cms/globalStateProvider";
+import { useRouter } from "next/router";
+
 const register = () => {
+  const [{ user }, dispatch] = useGlobalState();
+
+  const router = useRouter();
+
   const registerForm = useForm({
     initialValues: {
       username: "",
@@ -19,16 +28,36 @@ const register = () => {
     },
     validate: {
       email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      password: (value) => (value.length > 6 ? "Invalid Password" : null),
+      password: (value) => (value.length < 6 ? "Invalid Password" : null),
       confirmdPassword: (value, values) =>
         value !== values.password ? "Passwords did not match" : null,
     },
   });
 
+  const signInUser = (email, password) => {
+    console.log(email, password);
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential?.user;
+        dispatch({ type: "LOGIN", user: user });
+        router.push("/");
+        console.log(user);
+      })
+      .catch((err) => {
+        const errCode = err.code;
+        const errMsg = err.message;
+      });
+  };
   return (
     <Center style={{ width: "100%", height: "70vh" }}>
       <Paper shadow="md" p="md">
-        <form onSubmit={registerForm.onSubmit((values) => console.log(values))}>
+        <form
+          onSubmit={registerForm.onSubmit((values) => {
+            signInUser(values.email, values.password);
+            console.log(values.email);
+          })}
+        >
           <Stack>
             <TextInput
               placeholder="Username"
