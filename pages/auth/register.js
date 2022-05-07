@@ -86,6 +86,6 @@ const Register = () => {
   );
 };
 
-register.getLayout = (page) => <PageLayout>{page} </PageLayout>;
+Register.getLayout = (page) => <PageLayout>{page} </PageLayout>;
 
 export default Register;

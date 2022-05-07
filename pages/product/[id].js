@@ -90,7 +90,7 @@ const Product = ({ product }) => {
   );
 };
 
-product.getLayout = (page) => <PageLayout>{page}</PageLayout>;
+Product.getLayout = (page) => <PageLayout>{page}</PageLayout>;
 export default Product;
 
 export const getStaticPaths = async () => {

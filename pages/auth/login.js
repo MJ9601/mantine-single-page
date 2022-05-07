@@ -88,6 +88,6 @@ const Login = () => {
   );
 };
 
-login.getLayout = (page) => <PageLayout>{page} </PageLayout>;
+Login.getLayout = (page) => <PageLayout>{page} </PageLayout>;
 
 export default Login;
