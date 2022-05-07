@@ -9,4 +9,4 @@ As the all next project for running this project in develop mode, "yarn dev" or 
 This app after finishing will be deploy on vercel.
 
 The project link will be added below after deployment:
-
+[https://mantine-shopping.vercel.app/]
