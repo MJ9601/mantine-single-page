@@ -14,7 +14,7 @@ import { auth } from "../../firebaseBackend/firebaseConfig";
 import { useGlobalState } from "../../cms/globalStateProvider";
 import { useRouter } from "next/router";
 
-const register = () => {
+const Register = () => {
   const [{ user }, dispatch] = useGlobalState();
 
   const router = useRouter();
@@ -88,4 +88,4 @@ const register = () => {
 
 register.getLayout = (page) => <PageLayout>{page} </PageLayout>;
 
-export default register;
+export default Register;

@@ -18,7 +18,7 @@ import Rating from "../../components/Rating";
 import { useGlobalState } from "../../cms/globalStateProvider";
 import { useRouter } from "next/router";
 
-const product = ({ product }) => {
+const Product = ({ product }) => {
   const [{ user }, dispatch] = useGlobalState();
   const router = useRouter();
 
@@ -91,7 +91,7 @@ const product = ({ product }) => {
 };
 
 product.getLayout = (page) => <PageLayout>{page}</PageLayout>;
-export default product;
+export default Product;
 
 export const getStaticPaths = async () => {
   const products = await getAllProducts();

@@ -17,7 +17,7 @@ import { useGlobalState } from "../../cms/globalStateProvider";
 import { auth } from "../../firebaseBackend/firebaseConfig";
 import PageLayout from "../../layout/PageLayout";
 
-const login = () => {
+const Login = () => {
   const [{}, dispatch] = useGlobalState();
 
   const router = useRouter();
@@ -90,4 +90,4 @@ const login = () => {
 
 login.getLayout = (page) => <PageLayout>{page} </PageLayout>;
 
-export default login;
+export default Login;
