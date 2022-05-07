@@ -46,7 +46,7 @@ const product = ({ product }) => {
               <Group grow pr="md" spacing="lg" align="center">
                 <Group
                   pt="md"
-                  position="apart"
+                  position="left"
                   spacing="sm"
                   direction="row"
                   noWrap
@@ -54,7 +54,7 @@ const product = ({ product }) => {
                   <Rating _rate={product.rating.rate} />
                   <Text size="md">({product.rating.rate}/5)</Text>
                 </Group>
-                <Group pt="md" position="apart" spacing="sm" noWrap>
+                <Group pt="md" position="left" spacing="sm" noWrap>
                   <Title order={5}>Remainning:</Title>
                   <Text size="md">{product.rating.count}</Text>
                 </Group>

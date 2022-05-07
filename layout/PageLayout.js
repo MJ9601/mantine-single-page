@@ -8,11 +8,14 @@ import {
   Title,
   Input,
   Button,
+  Drawer,
 } from "@mantine/core";
 import "@fontsource/roboto";
-import { Search } from "tabler-icons-react";
+import { Search, ShoppingCart } from "tabler-icons-react";
+import { useGlobalState } from "../cms/globalStateProvider";
 
 const PageLayout = ({ children }) => {
+  const [{ openedDrawer, user }, dispatch] = useGlobalState();
   return (
     <AppShell
       styles={{
@@ -45,17 +48,25 @@ const PageLayout = ({ children }) => {
               />
             </Box>
             <Box sx={{ gap: "10px", display: "flex" }}>
-              <Button variant="outline" component="a" href="/auth/login">
-                Sign In
-              </Button>
-              <Button
-                component="a"
-                href="/auth/register"
-                variant="gradient"
-                gradient={{ from: "teal", to: "blue", deg: 60 }}
-              >
-                Sign Up
-              </Button>
+              {!user ? (
+                <>
+                  <Button variant="outline" component="a" href="/auth/login">
+                    Sign In
+                  </Button>
+                  <Button
+                    component="a"
+                    href="/auth/register"
+                    variant="gradient"
+                    gradient={{ from: "teal", to: "blue", deg: 60 }}
+                  >
+                    Sign Up
+                  </Button>
+                </>
+              ) : (
+                <Button onClick={() => dispatch({ type: "TOGGOLE" })}>
+                  <ShoppingCart />
+                </Button>
+              )}
             </Box>
           </Group>
         </Header>
@@ -72,6 +83,12 @@ const PageLayout = ({ children }) => {
         </Footer>
       }
     >
+      <Drawer
+        opened={openedDrawer}
+        onClose={() => dispatch({ type: "TOGGOLE" })}
+        padding="xl"
+        size="xl"
+      ></Drawer>
       {children}
     </AppShell>
   );
